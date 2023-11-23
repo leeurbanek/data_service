@@ -5,7 +5,6 @@ import os
 from src import config_dict
 
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -16,15 +15,16 @@ class DatabaseConnectionManager:
     Parameters
     ----------
     `db_path` : string
-        Path to an Sqlite3 database (default='test.db' for in memory db).\n
+        Path to an Sqlite3 database (db_path='test.db' for in memory db).\n
     `mode` : string
         determines if the new database is opened read-only 'ro', read-write 'rw',\n
-        read-write-create 'rwc', or pure in-memory database 'memory' (default) mode.\n
+        read-write-create 'rwc' (mode='memory' for in-memory database.)\n
     Returns
     -------
     An Sqlite3 connection object.\n
     """
-    def __init__(self, db_path='test.db', mode='memory'):
+    # def __init__(self, db_path='test.db', mode='memory'):
+    def __init__(self, db_path=None, mode=None):
         self.db_path = db_path
         self.mode = mode
 
@@ -64,7 +64,8 @@ if __name__ == '__main__':
             ]
 
         def test_db_ctx_mgr_in_memory_mode(self):
-            with DatabaseConnectionManager() as db:
+            # with DatabaseConnectionManager() as db:
+            with DatabaseConnectionManager(db_path='test_db', mode='memory') as db:
                 db.cursor.execute(f'''
                     CREATE TABLE {self.db_table} (
                         Date    DATE        NOT NULL,
@@ -72,9 +73,15 @@ if __name__ == '__main__':
                         PRIMARY KEY (Date)
                     );
                 ''')
-                db.cursor.executemany(f'INSERT INTO {self.db_table} VALUES (?,?)', self.rows)
+                db.cursor.executemany(f'''
+                    INSERT INTO {self.db_table} VALUES (?,?)
+                    ''', self.rows)
                 try:
-                    sql = db.cursor.execute(f"SELECT Field FROM {self.db_table} WHERE ROWID IN (SELECT max(ROWID) FROM {self.db_table});")
+                    sql = db.cursor.execute(f'''
+                        SELECT Field FROM {self.db_table} 
+                        WHERE ROWID IN (SELECT max(ROWID) 
+                        FROM {self.db_table});
+                        ''')
                     result = sql.fetchone()
                 except Exception as e:
                     print(f"{e}")
