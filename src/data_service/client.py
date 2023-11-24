@@ -37,6 +37,12 @@ def _tiingo_data(ctx):
     if ctx.obj['default']['debug'] == 'True':
         logger.debug(f"tiingo_data(ctx={ctx.obj})")
 
+    from src.data_service.reader import TiingoReader
+    reader = TiingoReader(ctx)
+    if ctx.obj['default']['debug'] == 'True':
+        logger.debug(f"reader={reader}")
+
+
     # [download(ctx, s.strip(',')) for s in ctx.obj['data_service']['symbol']]
 
 # import requests
