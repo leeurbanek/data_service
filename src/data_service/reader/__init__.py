@@ -18,11 +18,13 @@ class _BaseReader():
     """"""
     def __init__(self) -> None:
         self.start = self.default_start_date
+        self.symbol = config_dict['data_service']['symbol']
 
     def __repr__(self) -> str:
         return (
             f'{self.__class__.__name__}('
-            f'start={self.start})'
+            f'start={self.start}), '
+            f'symbol={self.symbol})'
             )
 
     @property

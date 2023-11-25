@@ -1,10 +1,15 @@
+import logging
 import os
+import requests
 
+from datetime import date
 from dotenv import load_dotenv
 
 from src.data_service.reader import _BaseReader
 
+
 load_dotenv()
+logger = logging.getLogger(__name__)
 
 
 class TiingoReader(_BaseReader):
@@ -21,8 +26,46 @@ class TiingoReader(_BaseReader):
             f'ctx={self.ctx}, '
             f'key={self.key}, '
             f'start={self.start}, '
+            f'symbol={self.symbol}, '
             f'url={self.url})'
             )
+
+    def parse_price_data(self, symbol):
+    # def parse_price_data(self):
+        """Returns a generator object"""
+        for item in self._read_one_price_data(symbol):
+        # for item in self._read_one_price_data(self.symbol):
+            data = [
+                date(*map(int, item.get('date')[:10].split('-'))),
+                # self.symbol.upper(),
+                symbol.upper(),
+                round(item.get('adjOpen')*100),
+                round(item.get('adjHigh')*100),
+                round(item.get('adjLow')*100),
+                round(item.get('adjClose')*100),
+                item.get('adjVolume'),
+            ]
+            yield data
+
+    def _read_one_price_data(self, symbol):
+        """"""
+        if self.ctx.obj['default']['debug'] == 'True':
+            logger.debug(f"_read_one_price_data({self}, symbol={symbol})")
+
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        requestResponse = requests.get(
+            f"{self.url}/daily/"
+            f"{symbol}/prices?"
+            f"startDate={self.start}"
+            f"&token={self.key}", 
+            headers=headers
+            )
+        if self.ctx.obj['default']['debug'] == 'True':
+            logger.debug(f"_read_one_price_data(ctx={self.ctx} requestResponse:\n {requestResponse.json()}")
+        return requestResponse.json()
+    
 
 # import json
 # import os
