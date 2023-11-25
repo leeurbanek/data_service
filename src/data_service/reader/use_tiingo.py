@@ -2,18 +2,27 @@ import os
 
 from dotenv import load_dotenv
 
+from src.data_service.reader import _BaseReader
 
 load_dotenv()
 
 
-class TiingoReader:
-    """"""
+class TiingoReader(_BaseReader):
+    """Stock market OHLC data from https://www.tiingo.com/"""
     def __init__(self, ctx) -> None:
+        super().__init__()
         self.ctx = ctx
         self.key = os.getenv('TIINGO_KEY')
+        self.url = ctx.obj['data_service']['url_tiingo']
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(ctx={self.ctx}, key={self.key}))"
+        return (
+            f'{self.__class__.__name__}('
+            f'ctx={self.ctx}, '
+            f'key={self.key}, '
+            f'start={self.start}, '
+            f'url={self.url})'
+            )
 
 # import json
 # import os

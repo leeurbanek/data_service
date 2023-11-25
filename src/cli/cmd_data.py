@@ -31,7 +31,7 @@ DESCRIPTION
 def cli(ctx, opt_trans=None, symbol=None):
     """Run data command"""
     if ctx.obj['default']['debug'] == 'True':
-        logger.debug(f"cli(ctx={ctx.obj})")
+        logger.debug(f"cli(ctx={ctx})")
 
     if opt_trans:    
         ctx.obj['data_service']['provider'] = opt_trans
@@ -46,7 +46,7 @@ def cli(ctx, opt_trans=None, symbol=None):
                 s.upper() for s in re.findall(r'[^,;\s]+', ctx.obj['data_service']['symbol'])
             ]
 
-        client.download(ctx)
+        client.get_data(ctx)
 
     else:  # print default message
         click.echo(f"""Usage: dataserv-cli data [OPTIONS] [SYMBOL]...
