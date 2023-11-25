@@ -11,15 +11,15 @@ def get_data(ctx):
 
     # select data provider
     if ctx.obj['data_service']['provider'] == 'alpha':
-        _alpha_data(ctx)
+        use_alpha_reader(ctx)
     elif ctx.obj['data_service']['provider'] == 'tiingo':
         use_tiingo_reader(ctx)
 
 
-def _alpha_data(ctx):
+def use_alpha_reader(ctx):
     """"""
     if ctx.obj['default']['debug'] == 'True':
-        logger.debug(f"_alpha_data(ctx={ctx.obj})")
+        logger.debug(f"use_alpha_reader(ctx={ctx.obj})")
 
     # [download(ctx, s.strip(',')) for s in ctx.obj['data_service']['symbol']]
 
@@ -29,7 +29,7 @@ def use_tiingo_reader(ctx):
     if ctx.obj['default']['debug'] == 'True':
         logger.debug(f"use_tiingo_reader(ctx={ctx})")
 
-    from src.data_service.reader.use_tiingo import TiingoReader
+    from src.data_service.reader.my_tiingo import TiingoReader
     reader = TiingoReader(ctx)
     if ctx.obj['default']['debug'] == 'True':
         logger.debug(f"reader object: {reader}")
@@ -54,10 +54,10 @@ def use_tiingo_reader(ctx):
 # logger = logging.getLogger(__name__)
 
 
-# def get_alpha_data_data(ctx_obj):
+# def getuse_alpha_reader_data(ctx_obj):
 #     """"""
 #     if ctx_obj['debug']:
-#         logger.debug(f"get_alpha_data_data(ctx_obj={ctx_obj})")
+#         logger.debug(f"getuse_alpha_reader_data(ctx_obj={ctx_obj})")
 #     from src.data_service.reader import AlphaReader
 #     reader = AlphaReader()
 #     print(f"reader: {reader}")

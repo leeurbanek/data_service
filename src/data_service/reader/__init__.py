@@ -3,7 +3,7 @@ import datetime
 # from typing import Union
 
 from src import config_dict
-from src.data_service.utils import DatabaseConnectionManager
+# from src.data_service.utils import DatabaseConnectionManager
 
 
 # conf_obj.read(config_file)
@@ -17,7 +17,20 @@ from src.data_service.utils import DatabaseConnectionManager
 class _BaseReader():
     """"""
     def __init__(self) -> None:
-        self.start = config_dict['data_service']['start_date']
+        self.start = self.default_start_date
+
+    def __repr__(self) -> str:
+        return (
+            f'{self.__class__.__name__}('
+            f'start={self.start})'
+            )
+
+    @property
+    def default_start_date(self):
+        """"""
+        lookback = int(config_dict['data_service']['back_days'])
+        return datetime.date.today() - datetime.timedelta(days=lookback)
+
         
 #     def __init__(self, api_key=None, db_date=None, end=None, start=None, symbol=None) -> None:
 #         self.api_key = api_key
@@ -26,12 +39,6 @@ class _BaseReader():
 #         start, end = _sanitize_dates(self.db_date, self.default_start_date, self.default_end_date)
 #         self.start = start
 #         self.end = end
-
-    def __repr__(self) -> str:
-        return (
-            f'{self.__class__.__name__}('
-            # f'start={self.start})'
-            )
 
 #     @staticmethod
 #     def database_date(db_path=None, db_table=None):
