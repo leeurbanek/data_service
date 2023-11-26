@@ -23,7 +23,7 @@ class _BaseReader():
     def __repr__(self) -> str:
         return (
             f'{self.__class__.__name__}('
-            f'start={self.start}), '
+            f'start={self.start}, '
             f'symbol={self.symbol})'
             )
 

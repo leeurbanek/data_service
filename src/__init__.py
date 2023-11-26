@@ -59,4 +59,4 @@ else:
     config_dict['default']['debug'] = 'False'
 
 logger = logging.getLogger(__name__)
-if debug: logger.debug(f"config_dict = {config_dict}")
+if debug: logger.debug(f"\nconfig_dict = {config_dict}")

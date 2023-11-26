@@ -1,8 +1,8 @@
+import datetime 
 import logging
 import os
 import requests
 
-from datetime import date
 from dotenv import load_dotenv
 
 from src.data_service.reader import _BaseReader
@@ -30,28 +30,36 @@ class TiingoReader(_BaseReader):
             f'url={self.url})'
             )
 
-    def parse_price_data(self, symbol):
-    # def parse_price_data(self):
-        """Returns a generator object"""
+    def download(self):
+        """"""
+        if self.ctx.obj['default']['debug'] == 'True':
+            logger.debug(f"download({self})")
+        for symbol in self.symbol:
+            yield self._parse_price_data(symbol)
+
+    def _parse_price_data(self, symbol):
+        if self.ctx.obj['default']['debug'] == 'True':
+            logger.debug(f"_parse_price_data(symbol={symbol})")
+
+        data_list = []
         for item in self._read_one_price_data(symbol):
-        # for item in self._read_one_price_data(self.symbol):
             data = [
-                date(*map(int, item.get('date')[:10].split('-'))),
-                # self.symbol.upper(),
+                datetime.date.fromisoformat(item.get('date')[:10]),
                 symbol.upper(),
                 round(item.get('adjOpen')*100),
                 round(item.get('adjHigh')*100),
                 round(item.get('adjLow')*100),
                 round(item.get('adjClose')*100),
-                item.get('adjVolume'),
+                item.get('adjVolume')
             ]
-            yield data
+            data_list.append(data)
 
+        if self.ctx.obj['default']['debug'] == 'True':
+            logger.debug(f"_parse_price_data() --> data_list:\n{data_list}")
+        return data_list
+    
     def _read_one_price_data(self, symbol):
         """"""
-        if self.ctx.obj['default']['debug'] == 'True':
-            logger.debug(f"_read_one_price_data({self}, symbol={symbol})")
-
         headers = {
             'Content-Type': 'application/json'
         }
@@ -63,7 +71,7 @@ class TiingoReader(_BaseReader):
             headers=headers
             )
         if self.ctx.obj['default']['debug'] == 'True':
-            logger.debug(f"_read_one_price_data(ctx={self.ctx} requestResponse:\n {requestResponse.json()}")
+            logger.debug(f"_read_one_price_data(symbol={symbol}) --> requestResponse:\n{requestResponse.json()}")
         return requestResponse.json()
     
 
