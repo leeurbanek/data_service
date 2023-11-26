@@ -7,6 +7,9 @@ from configparser import ConfigParser
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 config_file = os.path.join(base_dir, 'config.ini')
 
+logger_conf = os.path.join(base_dir, 'logger.ini')
+logging.config.fileConfig(fname=logger_conf)
+logging.getLogger('unittest').setLevel(logging.WARNING)
 
 # Create getlist() converter, used for reading ticker symbols
 # config_parser = ConfigParser(converters={'list': lambda x: [i.strip() for i in x.split(',')]})
@@ -46,10 +49,6 @@ config_dict = dict(
     ) for section in config_parser.sections()
 )
 
-logger_conf = os.path.join(base_dir, 'logger.ini')
-logging.config.fileConfig(fname=logger_conf)
-logging.getLogger('unittest').setLevel(logging.WARNING)
-
 # Set debug
 debug = False
 if config_dict['default']['debug'].lower() in [1, 'true', 't', 'yes', 'y'] :
@@ -59,4 +58,4 @@ else:
     config_dict['default']['debug'] = 'False'
 
 logger = logging.getLogger(__name__)
-if debug: logger.debug(f"\nconfig_dict = {config_dict}")
+if debug: logger.debug(f"config_dict:\n{config_dict}")

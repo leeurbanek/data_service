@@ -33,7 +33,7 @@ class TiingoReader(_BaseReader):
     def download(self):
         """"""
         if self.ctx.obj['default']['debug'] == 'True':
-            logger.debug(f"download({self})")
+            logger.debug(f"{self} .download() --> generator object\n")
         for symbol in self.symbol:
             yield self._parse_price_data(symbol)
 
@@ -55,7 +55,7 @@ class TiingoReader(_BaseReader):
             data_list.append(data)
 
         if self.ctx.obj['default']['debug'] == 'True':
-            logger.debug(f"_parse_price_data() --> data_list:\n{data_list}")
+            logger.debug(f"_parse_price_data() --> data_list:\n{data_list}\n")
         return data_list
     
     def _read_one_price_data(self, symbol):

@@ -17,7 +17,7 @@ TIINGO_KEY=tiingo_key
 DRIVER_PATH=r'\path\to\geckodriver'  # Firefox
 
 
-# Note: To find location of Adblockultimate in Firefox 78.13.0 for example:
+# Note: To find location of Adblockultimate in Firefox 120.0.0 for example:
 #  Go to the url about:support.
 #  In Application Basics table, next to Profile Directory, click button 'Open Directory'.
 #  Open extensions folder. The file you want ends with 'adblockultimate.net.xpi'.
