@@ -5,6 +5,7 @@ import os
 from src import config_dict
 
 
+debug = config_dict['default']['debug'] == 'True'
 logger = logging.getLogger(__name__)
 
 
@@ -26,10 +27,11 @@ class DatabaseConnectionManager:
     # def __init__(self, db_path='test.db', mode='memory'):
     def __init__(self, db_path=None, mode=None):
         self.db_path = db_path
+        self.debug = debug
         self.mode = mode
 
     def __enter__(self):
-        logger.debug('DatabaseConnectionManager.__enter__()')
+        if self.debug: logger.debug('DatabaseConnectionManager.__enter__()')
         try:
             self.connection = sqlite3.connect(
                 f'file:{os.path.abspath(self.db_path)}?mode={self.mode}',
@@ -44,7 +46,7 @@ class DatabaseConnectionManager:
             print(f'{e}: {self.db_path}')
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
-        logger.debug('DatabaseConnectionManager.__exit__()')
+        if self.debug: logger.debug('DatabaseConnectionManager.__exit__()')
         self.cursor.close()
         if isinstance(exc_value, Exception):
             self.connection.rollback()

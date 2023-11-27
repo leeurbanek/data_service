@@ -1,5 +1,7 @@
 import logging
 
+from src.data_service.utils import DatabaseConnectionManager
+
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +18,7 @@ def get_data(ctx):
         data = use_tiingo_reader(ctx)
 
         if ctx.obj['default']['debug'] == 'True':
-            logger.debug(f"get_data(ctx) --> data:\n {[item for item in data]})")
+            logger.debug(f"get_data(ctx) --> data:\n {[item for item in data]}")
 
 
 def use_alpha_reader(ctx):
