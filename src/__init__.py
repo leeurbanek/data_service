@@ -7,6 +7,10 @@ from configparser import ConfigParser
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 config_file = os.path.join(base_dir, 'config.ini')
 
+# remove old 'debug.log'
+if os.path.exists('debug.log'):
+    os.remove('debug.log')
+
 logger_conf = os.path.join(base_dir, 'logger.ini')
 logging.config.fileConfig(fname=logger_conf)
 logging.getLogger('unittest').setLevel(logging.WARNING)
@@ -58,4 +62,8 @@ else:
     config_dict['default']['debug'] = 'False'
 
 logger = logging.getLogger(__name__)
-if debug: logger.debug(f"config_dict:\n{config_dict}")
+if debug: 
+    logger.debug(
+        # f"removed old 'debug.log'\n"
+        f"config_dict={config_dict}\n"
+        )

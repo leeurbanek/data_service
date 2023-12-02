@@ -1,3 +1,4 @@
+import datetime
 import logging
 import sqlite3
 import os
@@ -24,7 +25,6 @@ class DatabaseConnectionManager:
     -------
     An Sqlite3 connection object.\n
     """
-    # def __init__(self, db_path='test.db', mode='memory'):
     def __init__(self, db_path=None, mode=None):
         self.db_path = db_path
         self.debug = debug
@@ -39,7 +39,7 @@ class DatabaseConnectionManager:
                 detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES, uri=True
             )
             self.cursor = self.connection.cursor()
-            logger.debug(f"connected '{os.path.basename(self.db_path)}', mode: {self.mode}")
+            if self.debug: logger.debug(f"connected '{os.path.basename(self.db_path)}', mode: {self.mode}")
             # return self.cursor
             return self
         except sqlite3.Error as e:
@@ -55,18 +55,52 @@ class DatabaseConnectionManager:
         self.connection.close()
 
 
+class DatabaseWriterManager:
+    """Context manager for writing to Sqlite3 databases.
+    -------------------------------------------------
+    \n
+    Parameters
+    ----------
+    \n
+    Returns
+    -------
+    \n
+    """
+    def __init__(self, data=None):
+        self.data = data
+        self.debug = debug
+
+    def __enter__(self):
+        if self.debug: logger.debug('DatabaseWriterManager.__enter__()')
+        try:
+            self.output = []
+            for item in self.data:
+                self.output.append(item)
+            if self.debug: logger.debug(self.output)
+            return self
+        except Exception as e:
+            print(f"{e}")
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        if self.debug: logger.debug('DatabaseWriterManager.__exit__()')
+
+
 if __name__ == '__main__':
     import unittest
 
-    class ContextManagerTest(unittest.TestCase):
+    class DatabaseConnectionManagerTest(unittest.TestCase):
+        """"""
         def setUp(self) -> None:
             self.db_table = 'data'
             self.rows = [
                 ('D1','F1'), ('D2','F2'), ('D3','F3'),
             ]
 
+        def tearDown(self) -> None:
+        #    logging.disable(logging.CRITICAL)
+           del self.db_table, self.rows
+        
         def test_db_ctx_mgr_in_memory_mode(self):
-            # with DatabaseConnectionManager() as db:
             with DatabaseConnectionManager(db_path='test_db', mode='memory') as db:
                 db.cursor.execute(f'''
                     CREATE TABLE {self.db_table} (
@@ -89,7 +123,41 @@ if __name__ == '__main__':
                     print(f"{e}")
                 self.assertEqual(result, ('F3',))
 
-    unittest.main()
+    class DatabaseWriterManagerTest(unittest.TestCase):
+        """"""
+        def setUp(self) -> None:
+            self.data = [
+                [
+                    [datetime.date(2023, 11, 27), 'EEM', 3937, 3942, 3927, 3938, 22925243], 
+                    [datetime.date(2023, 11, 28), 'EEM', 3956, 3978, 3949, 3971, 35006717], 
+                    [datetime.date(2023, 11, 29), 'EEM', 3951, 3972, 3944, 3948, 26049154], 
+                    [datetime.date(2023, 11, 30), 'EEM', 3957, 3961, 3929, 3956, 30482770], 
+                    [datetime.date(2023, 12, 1), 'EEM', 3929, 3973, 3920, 3973, 27140196]], 
+                [
+                    [datetime.date(2023, 11, 27), 'IWM', 17850, 17911, 17723, 17873, 30665810], 
+                    [datetime.date(2023, 11, 28), 'IWM', 17855, 17922, 17720, 17804, 28350213], 
+                    [datetime.date(2023, 11, 29), 'IWM', 17955, 18175, 17870, 17898, 31590200], 
+                    [datetime.date(2023, 11, 30), 'IWM', 18005, 18064, 17876, 17966, 32216751], 
+                    [datetime.date(2023, 12, 1), 'IWM', 17920, 18518, 17821, 18491, 64221297]], 
+                [
+                    [datetime.date(2023, 11, 27), 'LQD', 10467, 10520, 10449, 10518, 17919475], 
+                    [datetime.date(2023, 11, 28), 'LQD', 10500, 10564, 10490, 10560, 21320767], 
+                    [datetime.date(2023, 11, 29), 'LQD', 10615, 10652, 10601, 10646, 20661847], 
+                    [datetime.date(2023, 11, 30), 'LQD', 10622, 10625, 10569, 10590, 41950881], 
+                    [datetime.date(2023, 12, 1), 'LQD', 10604, 10722, 10590, 10717, 27733665]
+                ]
+            ]
+
+        def tearDown(self) -> None:
+           logging.disable(logging.CRITICAL)
+           del self.data
+        
+        def test_db_writer_mgr(self):
+            with DatabaseWriterManager(data=self.data) as writer:
+                writer.output
+
+    unittest.main(verbosity=2)
+
 
 # =======
 

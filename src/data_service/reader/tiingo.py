@@ -13,31 +13,46 @@ logger = logging.getLogger(__name__)
 
 
 class TiingoReader(_BaseReader):
-    """Stock market OHLC data from https://www.tiingo.com/"""
+    """Retrieve stock market OHLC data from https://www.tiingo.com/.
+    ------------------------------------------------------------
+    Parameters
+    ----------
+    `ctx` : dictionary
+        python-click command line interface context dictionary\n
+    Returns
+    -------
+    python generator object\n
+    """
     def __init__(self, ctx) -> None:
         super().__init__()
         self.ctx = ctx
         self.key = os.getenv('TIINGO_KEY')
-        self.url = ctx.obj['data_service']['url_tiingo']
+        # self.url = ctx.obj['data_service']['url_tiingo']
 
     def __repr__(self) -> str:
         return (
-            f'{self.__class__.__name__}('
-            f'ctx={self.ctx}, '
-            f'key={self.key}, '
-            f'start={self.start}, '
-            f'symbol={self.symbol}, '
-            f'url={self.url})'
+            f"{self.__class__.__name__}("
+            f"ctx={self.ctx}, "
+            f"key={self.key}, "
+            f"start={self.start}, "
+            f"symbol={self.symbol}, "
+            f"url={self.ctx.obj['data_service']['url_tiingo']})"
             )
 
     def download(self):
-        """"""
+        """TiingoReader.download()
+        -----------------------
+        Public method of TiingoReader class.\n
+        Returns
+        -------
+        python Generator['date', 'symbol', 'open', 'high', 'low', 'close', 'volume']\n
+        """
         if self.ctx.obj['default']['debug'] == 'True':
-            logger.debug(f"{self} .download() --> generator object\n")
+            logger.debug(f"{self} .download() -> generator object\n")
         for symbol in self.symbol:
             yield self._parse_price_data(symbol)
 
-    def _parse_price_data(self, symbol):
+    def _parse_price_data(self, symbol: list) -> list:
         if self.ctx.obj['default']['debug'] == 'True':
             logger.debug(f"_parse_price_data(symbol={symbol})")
 
@@ -55,7 +70,7 @@ class TiingoReader(_BaseReader):
             data_list.append(data)
 
         if self.ctx.obj['default']['debug'] == 'True':
-            logger.debug(f"_parse_price_data() --> data_list:\n{data_list}\n")
+            logger.debug(f"_parse_price_data() -> data_list:\n{data_list}\n")
         return data_list
     
     def _read_one_price_data(self, symbol):
@@ -64,14 +79,15 @@ class TiingoReader(_BaseReader):
             'Content-Type': 'application/json'
         }
         requestResponse = requests.get(
-            f"{self.url}/daily/"
+            # f"{self.url}/daily/"
+            f"{self.ctx.obj['data_service']['url_tiingo']}/daily/"
             f"{symbol}/prices?"
             f"startDate={self.start}"
             f"&token={self.key}", 
             headers=headers
             )
         if self.ctx.obj['default']['debug'] == 'True':
-            logger.debug(f"_read_one_price_data(symbol={symbol}) --> requestResponse:\n{requestResponse.json()}")
+            logger.debug(f"_read_one_price_data(symbol={symbol}) -> requestResponse:\n{requestResponse.json()}")
         return requestResponse.json()
     
 
