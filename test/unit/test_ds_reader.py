@@ -1,19 +1,22 @@
 import datetime
 import logging
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, MagicMock
 
+from src import config_dict
 from src.data_service.reader.tiingo import TiingoReader
+
+
+debug = config_dict['default']['debug'] == 'True'
+logger = logging.getLogger(__name__)
 
 
 class TiingoReaderTest(unittest.TestCase):
 
     def setUp(self) -> None:
-        # self.ctx.obj['default']['debug'] = Mock()
-        # self.ctx.obj['default']['debug'].return_value = 'True'
-        # self.ctx = Mock()
-        # self.ctx.return_value = {
-        self.ctx = {
+        self.debug = debug
+        self.ctx = MagicMock()
+        self.ctx.return_value = {
             'default': {
                 'debug': 'True', 
                 'temp_dir': 'temp'
@@ -25,7 +28,9 @@ class TiingoReaderTest(unittest.TestCase):
                 'url_tiingo': 'https://api.tiingo.com/tiingo'
             }
         }
-        self._read_one_price_data = Mock()
+        self.symbol = MagicMock()
+        self.symbol.return_value = ['EEM', 'IWM', 'LQD']
+        self._read_one_price_data = MagicMock()
         self._read_one_price_data.return_value = [
             {
                 'date': '2023-11-21T00:00:00.000Z', 
@@ -75,13 +80,15 @@ class TiingoReaderTest(unittest.TestCase):
         ]
 
     def tearDown(self) -> None:
-        logging.disable(logging.CRITICAL)
+        # logging.disable(logging.CRITICAL)
         del self._read_one_price_data
 
-    def test_parse_price_data(self):
+    def test_download(self):
         data_list = [datetime.date(2023, 3, 31), 'IWM', 17640, 17864, 17637, 17840, 39602850]
-        self.assertEqual(TiingoReader._read_one_price_data(self.ctx, 'IWM'), data_list)
+        if self.debug: logger.debug(f"TiingoReader.download={list(TiingoReader.download(self))}")
+        if self.debug: logger.debug(f"TiingoReader.download={tuple(TiingoReader.download(self))}")
+        self.assertEqual(tuple(TiingoReader.download(self)), data_list)
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)

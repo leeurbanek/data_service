@@ -10,7 +10,7 @@ class DataServiceClientTest(unittest.TestCase):
         self.data = []
 
     def tearDown(self) -> None:
-        logging.disable(logging.CRITICAL)
+        # logging.disable(logging.CRITICAL)
         del self.data
 
     def test_client(self):
@@ -18,4 +18,4 @@ class DataServiceClientTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)
