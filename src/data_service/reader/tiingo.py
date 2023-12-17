@@ -27,7 +27,7 @@ class TiingoReader(_BaseReader):
         super().__init__()
         self.ctx = ctx
         self.key = os.getenv('TIINGO_KEY')
-        # self.url = ctx.obj['data_service']['url_tiingo']
+        self.url = ctx.obj['data_service']['url_tiingo']
 
     def __repr__(self) -> str:
         return (
@@ -36,7 +36,7 @@ class TiingoReader(_BaseReader):
             f"key={self.key}, "
             f"start={self.start}, "
             f"symbol={self.symbol}, "
-            f"url={self.ctx.obj['data_service']['url_tiingo']})"
+            f"url={self.url}"
             )
 
     def download(self):
@@ -79,8 +79,7 @@ class TiingoReader(_BaseReader):
             'Content-Type': 'application/json'
         }
         requestResponse = requests.get(
-            # f"{self.url}/daily/"
-            f"{self.ctx.obj['data_service']['url_tiingo']}/daily/"
+            f"{self.url}/daily/"
             f"{symbol}/prices?"
             f"startDate={self.start}"
             f"&token={self.key}", 

@@ -1,20 +1,58 @@
 import datetime
 
 
-tiingo_data = [
+ctx_tiingo = {
+    'default': {'debug': 'True', 'temp_dir': 'temp'}, 
+    'data_service': {'back_days': '5', 'database': 'db.sqlite', 'symbol': 'IWM LQD', 'url_tiingo': 'https://api.tiingo.com/tiingo'}
+}
+
+read_one_price_data_IWM = [
+    {'date': '2023-12-11T00:00:00.000Z', 'close': 187.19, 'high': 187.62, 'low': 185.885, 'open': 186.68, 'volume': 29302064, 'adjClose': 187.19, 'adjHigh': 187.62, 'adjLow': 185.885, 'adjOpen': 186.68, 'adjVolume': 29302064, 'divCash': 0.0, 'splitFactor': 1.0}, 
+    {'date': '2023-12-12T00:00:00.000Z', 'close': 187.0, 'high': 187.655, 'low': 185.335, 'open': 186.97, 'volume': 32023999, 'adjClose': 187.0, 'adjHigh': 187.655, 'adjLow': 185.335, 'adjOpen': 186.97, 'adjVolume': 32023999, 'divCash': 0.0, 'splitFactor': 1.0}, 
+    {'date': '2023-12-13T00:00:00.000Z', 'close': 193.33, 'high': 193.64, 'low': 185.67, 'open': 187.1, 'volume': 69484819, 'adjClose': 193.33, 'adjHigh': 193.64, 'adjLow': 185.67, 'adjOpen': 187.1, 'adjVolume': 69484819, 'divCash': 0.0, 'splitFactor': 1.0}, 
+    {'date': '2023-12-14T00:00:00.000Z', 'close': 198.71, 'high': 200.035, 'low': 196.48, 'open': 196.87, 'volume': 83649334, 'adjClose': 198.71, 'adjHigh': 200.035, 'adjLow': 196.48, 'adjOpen': 196.87, 'adjVolume': 83649334, 'divCash': 0.0, 'splitFactor': 1.0}, 
+    {'date': '2023-12-15T00:00:00.000Z', 'close': 197.04, 'high': 199.55, 'low': 195.95, 'open': 198.95, 'volume': 74160699, 'adjClose': 197.04, 'adjHigh': 199.55, 'adjLow': 195.95, 'adjOpen': 198.95, 'adjVolume': 74160699, 'divCash': 0.0, 'splitFactor': 1.0}
+]
+
+parse_price_data_IWM = [
+    [datetime.date(2023, 12, 11), 'IWM', 18668, 18762, 18588, 18719, 29302064], 
+    [datetime.date(2023, 12, 12), 'IWM', 18697, 18766, 18534, 18700, 32023999], 
+    [datetime.date(2023, 12, 13), 'IWM', 18710, 19364, 18567, 19333, 69484819], 
+    [datetime.date(2023, 12, 14), 'IWM', 19687, 20004, 19648, 19871, 83649334], 
+    [datetime.date(2023, 12, 15), 'IWM', 19895, 19955, 19595, 19704, 74160699]
+]
+
+read_one_price_data_LQD = [
+    {'date': '2023-12-11T00:00:00.000Z', 'close': 107.33, 'high': 107.36, 'low': 106.78, 'open': 107.22, 'volume': 17714571, 'adjClose': 106.9499753455, 'adjHigh': 106.9798691241, 'adjLow': 106.4019227373, 'adjOpen': 106.8403648238, 'adjVolume': 17714571, 'divCash': 0.0, 'splitFactor': 1.0}, 
+    {'date': '2023-12-12T00:00:00.000Z', 'close': 107.94, 'high': 107.9758, 'low': 107.14, 'open': 107.32, 'volume': 22111087, 'adjClose': 107.557815511, 'adjHigh': 107.5934887535, 'adjLow': 106.7606480808, 'adjOpen': 106.9400107526, 'adjVolume': 22111087, 'divCash': 0.0, 'splitFactor': 1.0}, 
+    {'date': '2023-12-13T00:00:00.000Z', 'close': 109.75, 'high': 109.945, 'low': 108.13, 'open': 108.35, 'volume': 33623567, 'adjClose': 109.3614068216, 'adjHigh': 109.5557163827, 'adjLow': 107.7471427756, 'adjOpen': 107.9663638189, 'adjVolume': 33623567, 'divCash': 0.0, 'splitFactor': 1.0}, 
+    {'date': '2023-12-14T00:00:00.000Z', 'close': 110.52, 'high': 110.865, 'low': 110.12, 'open': 110.24, 'volume': 28202255, 'adjClose': 110.52, 'adjHigh': 110.865, 'adjLow': 110.12, 'adjOpen': 110.24, 'adjVolume': 28202255, 'divCash': 0.39271, 'splitFactor': 1.0}, 
+    {'date': '2023-12-15T00:00:00.000Z', 'close': 110.36, 'high': 110.57, 'low': 110.14, 'open': 110.42, 'volume': 17904113, 'adjClose': 110.36, 'adjHigh': 110.57, 'adjLow': 110.14, 'adjOpen': 110.42, 'adjVolume': 17904113, 'divCash': 0.0, 'splitFactor': 1.0}
+]
+
+parse_price_data_LQD = [
+    [datetime.date(2023, 12, 11), 'LQD', 10684, 10698, 10640, 10695, 17714571], 
+    [datetime.date(2023, 12, 12), 'LQD', 10694, 10759, 10676, 10756, 22111087], 
+    [datetime.date(2023, 12, 13), 'LQD', 10797, 10956, 10775, 10936, 33623567], 
+    [datetime.date(2023, 12, 14), 'LQD', 11024, 11086, 11012, 11052, 28202255], 
+    [datetime.date(2023, 12, 15), 'LQD', 11042, 11057, 11014, 11036, 17904113]
+]
+
+get_data = [
     [
-        [datetime.date(2023, 11, 21), 'EEM', 3975, 3983, 3952, 3960, 20929670],
-        [datetime.date(2023, 11, 22), 'EEM', 3955, 3964, 3938, 3952, 20007157],
-        [datetime.date(2023, 11, 24), 'EEM', 3936, 3957, 3933, 3954, 11365033]
-    ],
+        [datetime.date(2023, 12, 11), 'IWM', 18668, 18762, 18588, 18719, 29302064], 
+        [datetime.date(2023, 12, 12), 'IWM', 18697, 18766, 18534, 18700, 32023999], 
+        [datetime.date(2023, 12, 13), 'IWM', 18710, 19364, 18567, 19333, 69484819], 
+        [datetime.date(2023, 12, 14), 'IWM', 19687, 20004, 19648, 19871, 83649334], 
+        [datetime.date(2023, 12, 15), 'IWM', 19895, 19955, 19595, 19704, 74160699]
+    ], 
     [
-        [datetime.date(2023, 11, 21), 'IWM', 17824, 17850, 17691, 17702, 30457019],
-        [datetime.date(2023, 11, 22), 'IWM', 17818, 17939, 17742, 17813, 28980363],
-        [datetime.date(2023, 11, 24), 'IWM', 17805, 17973, 17780, 17933, 13846889]
-    ],
-    [
-        [datetime.date(2023, 11, 21), 'LQD', 10483, 10497, 10455, 10484, 20273258],
-        [datetime.date(2023, 11, 22), 'LQD', 10524, 10538, 10485, 10526, 18587992],
-        [datetime.date(2023, 11, 24), 'LQD', 10486, 10502, 10470, 10472, 6391351]
+        [datetime.date(2023, 12, 11), 'LQD', 10684, 10698, 10640, 10695, 17714571], 
+        [datetime.date(2023, 12, 12), 'LQD', 10694, 10759, 10676, 10756, 22111087], 
+        [datetime.date(2023, 12, 13), 'LQD', 10797, 10956, 10775, 10936, 33623567], 
+        [datetime.date(2023, 12, 14), 'LQD', 11024, 11086, 11012, 11052, 28202255], 
+        [datetime.date(2023, 12, 15), 'LQD', 11042, 11057, 11014, 11036, 17904113]
     ]
 ]
+
+symbol = ['IWM', 'LQD']
