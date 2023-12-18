@@ -46,7 +46,11 @@ def cli(ctx, opt_trans=None, symbol=None):
                 s.upper() for s in re.findall(r'[^,;\s]+', ctx.obj['data_service']['symbol'])
             ]
 
-        client.get_data(ctx)
+        data_list = client.get_data(ctx)
+
+        print(f"data={[item for item in data_list]}")
+        for item in data_list:
+            print(f"\nitem {item}")
 
     else:  # print default message
         click.echo(f"""Usage: dataserv-cli data [OPTIONS] [SYMBOL]...

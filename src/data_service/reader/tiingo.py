@@ -52,6 +52,20 @@ class TiingoReader(_BaseReader):
         for symbol in self.symbol:
             yield self._parse_price_data(symbol)
 
+    # class iterable_class_with_generator:
+    #     def __init__(self, n):
+    #         self._gen = self._generate(n)
+
+    #     def __iter__(self):
+    #         return self
+
+    #     def __next__(self):
+    #         return next(self._gen)
+
+    #     def _generate(self, n):
+    #         for i in range(n):
+    #             yield i
+
     def _parse_price_data(self, symbol: list) -> list:
         if self.ctx.obj['default']['debug'] == 'True':
             logger.debug(f"_parse_price_data(symbol={symbol})")

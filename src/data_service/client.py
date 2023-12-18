@@ -17,8 +17,13 @@ def get_data(ctx):
     elif ctx.obj['data_service']['provider'] == 'tiingo':
         data_generator = _use_tiingo_reader(ctx)
 
+    data_list = list(data_generator)
+    # if ctx.obj['default']['debug'] == 'True':
+    #     logger.debug(f"get_data({ctx}) -> data: {[item for item in data_generator]}")
     if ctx.obj['default']['debug'] == 'True':
-        logger.debug(f"get_data({ctx}) -> data: {[item for item in data_generator]}")
+        logger.debug(f"get_data({ctx}) -> data: {[item for item in data_list]}")
+
+    return data_list
 
 
 def _use_alpha_reader(ctx):
