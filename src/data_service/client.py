@@ -18,10 +18,9 @@ def get_data(ctx):
         data_generator = _use_tiingo_reader(ctx)
 
     data_list = list(data_generator)
-    # if ctx.obj['default']['debug'] == 'True':
-    #     logger.debug(f"get_data({ctx}) -> data: {[item for item in data_generator]}")
+
     if ctx.obj['default']['debug'] == 'True':
-        logger.debug(f"get_data({ctx}) -> data: {[item for item in data_list]}")
+        logger.debug(f"get_data({ctx}) -> data:\n{[item for item in data_list]}")
 
     return data_list
 
@@ -39,7 +38,7 @@ def _use_tiingo_reader(ctx):
 
     from src.data_service.reader.tiingo import TiingoReader
     reader = TiingoReader(ctx)
-    return reader.download()
+    return reader.fetch_data_list()
 
     # for symbol in ctx.obj['data_service']['symbol']:
     #     if ctx.obj['default']['debug'] == 'True':

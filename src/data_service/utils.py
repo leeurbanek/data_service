@@ -73,17 +73,21 @@ class PriceManager:
     def __enter__(self):
         if self.debug: logger.debug('PriceManager.__enter__()')
         try:
-            self.column = []
+            self.column = []  # symbol
             for item in self.data:
                 self.column.append(item[0][1])
 
-            self.index = []
+            self.index = []  # date
             for item in self.data[0]:
                 self.index.append(item[0])
 
-            self.price = []
+            self.price = []  # close weighted price
             for item in self.data:
-                self.price.append([round((i[3]+i[4]+i[5]*2)/4) for i in item])
+                self.price.append([
+                    round(  # high + low + close
+                        (i[3] + i[4] + i[5]*2) / 4
+                    )for i in item
+                ])
 
             if self.debug: logger.debug(
                 f"column={self.column}, "

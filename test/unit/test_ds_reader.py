@@ -36,8 +36,8 @@ class TiingoReaderTest(unittest.TestCase):
         # logging.disable(logging.CRITICAL)
         del self
 
-    def test_download(self):
-        tiingo_data = TiingoReader.download(self)
+    def test_fetch_data_list(self):
+        tiingo_data = TiingoReader.fetch_data_list(self)
         for i in range(len(self.get_data.return_value)):
             if debug: logger.debug(f"next(tiingo_data): {tiingo_data}")
         #     print(f"\n\ntiingo_data, self.get_data.return_value[{i}]={tiingo_data, self.get_data.return_value[i][1]}\n")

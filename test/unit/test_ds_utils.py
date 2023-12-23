@@ -55,17 +55,26 @@ class DatabaseConnectionManagerTest(unittest.TestCase):
 class PriceManagerTest(unittest.TestCase):
     """"""
     def setUp(self) -> None:
-        self.get_data = get_data
+        self.data = get_data
 
     def tearDown(self) -> None:
         logging.disable(logging.CRITICAL)
-        del self.get_data
+        del self.data
     
     def test_column_index_price_value(self):
-        with PriceManager(data=self.get_data) as writer:
+        with PriceManager(data=self.data) as writer:
             self.assertEqual(['IWM', 'LQD'], writer.column)
-            self.assertEqual([datetime.date(2023, 12, 11), datetime.date(2023, 12, 12), datetime.date(2023, 12, 13), datetime.date(2023, 12, 14), datetime.date(2023, 12, 15)], writer.index)
-            self.assertEqual([[18697, 18675, 19149, 19848, 19740], [10682, 10737, 10901, 11050, 11036]], writer.price)
+            self.assertEqual([
+                datetime.date(2023, 12, 11), 
+                datetime.date(2023, 12, 12), 
+                datetime.date(2023, 12, 13), 
+                datetime.date(2023, 12, 14), 
+                datetime.date(2023, 12, 15)
+            ], writer.index)
+            self.assertEqual([
+                [18697, 18675, 19149, 19848, 19740], 
+                [10682, 10737, 10901, 11050, 11036]
+            ], writer.price)
 
 
 if __name__ == '__main__':

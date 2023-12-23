@@ -7,10 +7,10 @@
 AD_BLOCK='/location/of/Adblockultimate'
 
 # https://www.alphavantage.co
-ALPHA_KEY=alphavantage_key
+ALPHA_KEY=1234
 
 # https://api.tiingo.com
-TIINGO_KEY=tiingo_key
+TIINGO_KEY=1234
 
 # For Windows users:
 # location of the browser driver for Selenium
