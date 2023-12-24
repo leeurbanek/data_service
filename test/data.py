@@ -3,7 +3,7 @@ import datetime
 
 ctx_tiingo = {
     'default': {'debug': 'True', 'temp_dir': 'temp'}, 
-    'data_service': {'back_days': '5', 'database': 'db.sqlite', 'symbol': 'IWM LQD', 'url_tiingo': 'https://api.tiingo.com/tiingo'}
+    'data_service': {'back_days': '5', 'database': 'data_service.db', 'symbol': 'IWM LQD', 'url_tiingo': 'https://api.tiingo.com/tiingo'}
 }
 
 read_one_price_data_IWM = [
@@ -56,3 +56,29 @@ get_data = [
 ]
 
 symbol = ['IWM', 'LQD']
+
+close_weighted_price = {
+    'default': {'debug': 'True', 'temp_dir': 'temp'}, 
+    'data_service': {
+        'back_days': '5', 
+        'database': 'data_service.db', 
+        'symbol': ['IWM', 'LQD'], 
+        'table': 'price volume', 
+        'url_tiingo': 'https://api.tiingo.com/tiingo', 
+        'provider': 'tiingo', 
+        'data_list': [
+            [
+                ['IWM', datetime.date(2023, 12, 19), 19774, 20055, 19728, 20018, 50840215], 
+                ['IWM', datetime.date(2023, 12, 20), 19986, 20217, 19616, 19628, 62360257], 
+                ['IWM', datetime.date(2023, 12, 21), 19850, 19982, 19752, 19962, 38613394], 
+                ['IWM', datetime.date(2023, 12, 22), 20088, 20281, 20019, 20148, 39173804]
+            ], 
+            [
+                ['LQD', datetime.date(2023, 12, 19), 11011, 11037, 10996, 11004, 18082571], 
+                ['LQD', datetime.date(2023, 12, 20), 11025, 11042, 10990, 11033, 23942016], 
+                ['LQD', datetime.date(2023, 12, 21), 11059, 11071, 11003, 11029, 24168326], 
+                ['LQD', datetime.date(2023, 12, 22), 11044, 11050, 10994, 11010, 11037070]
+            ]
+        ]
+    }
+}

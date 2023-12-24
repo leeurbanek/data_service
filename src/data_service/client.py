@@ -1,5 +1,6 @@
 import logging
 
+from src import debug
 from src.data_service.utils import DatabaseConnectionManager
 
 
@@ -8,8 +9,7 @@ logger = logging.getLogger(__name__)
 
 def get_data(ctx):
     """"""
-    if ctx.obj['default']['debug'] == 'True':
-        logger.debug(f"get_data(ctx={ctx.obj})")
+    if debug: logger.debug(f"get_data(ctx={ctx.obj})")
 
     # select data provider
     if ctx.obj['data_service']['provider'] == 'alpha':
@@ -17,13 +17,10 @@ def get_data(ctx):
     elif ctx.obj['data_service']['provider'] == 'tiingo':
         data_generator = _use_tiingo_reader(ctx)
 
-    data_list = list(data_generator)
+    ctx.obj['data_service']['data_list'] = list(data_generator)
 
-    if ctx.obj['default']['debug'] == 'True':
-        logger.debug(f"get_data({ctx}) -> data:\n{[item for item in data_list]}")
-
-    return data_list
-
+    if debug: logger.debug(f"get_data({ctx}) -> data:\n{[item for item in ctx.obj['data_service']['data_list']]}")
+    
 
 def _use_alpha_reader(ctx):
     """"""

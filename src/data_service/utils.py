@@ -40,7 +40,6 @@ class DatabaseConnectionManager:
             )
             self.cursor = self.connection.cursor()
             if self.debug: logger.debug(f"connected '{os.path.basename(self.db_path)}', mode: {self.mode}")
-            # return self.cursor
             return self
         except sqlite3.Error as e:
             print(f'{e}: {self.db_path}')
@@ -53,6 +52,12 @@ class DatabaseConnectionManager:
         else:
             self.connection.commit()
         self.connection.close()
+
+
+def close_weighted_price(ctx):
+    """"""
+    if ctx.obj['default']['debug'] == 'True':
+        logger.debug(f"close_weighted_price(ctx={ctx.obj})")
 
 
 class PriceManager:

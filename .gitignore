@@ -171,6 +171,7 @@ TODO
 chromedriver
 x*.*
 .md
+beta.py
 
 #*.bak
 #*.log

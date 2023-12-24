@@ -3,6 +3,7 @@ import logging
 import click
 
 from src.data_service import client
+from src.data_service.utils import close_weighted_price
 
 
 logger = logging.getLogger(__name__)
@@ -46,11 +47,8 @@ def cli(ctx, opt_trans=None, symbol=None):
                 s.upper() for s in re.findall(r'[^,;\s]+', ctx.obj['data_service']['symbol'])
             ]
 
-        data_list = client.get_data(ctx)
-
-        print(f"data={[item for item in data_list]}")
-        for item in data_list:
-            print(f"\nitem {item}")
+        client.get_data(ctx)
+        close_weighted_price(ctx)
 
     else:  # print default message
         click.echo(f"""Usage: dataserv-cli data [OPTIONS] [SYMBOL]...
