@@ -31,8 +31,7 @@ DESCRIPTION
 @click.pass_context
 def cli(ctx, opt_trans=None, symbol=None):
     """Run data command"""
-    if ctx.obj['default']['debug'] == 'True':
-        logger.debug(f"cli(ctx={ctx})")
+    if ctx.obj['default']['debug'] == 'True': logger.debug(f"cli(ctx={ctx.obj})")
 
     if opt_trans:    
         ctx.obj['data_service']['provider'] = opt_trans
@@ -46,9 +45,7 @@ def cli(ctx, opt_trans=None, symbol=None):
             ctx.obj['data_service']['symbol'] = [  # convert str to list
                 s.upper() for s in re.findall(r'[^,;\s]+', ctx.obj['data_service']['symbol'])
             ]
-
         client.get_data(ctx)
-        close_weighted_price(ctx)
 
     else:  # print default message
         click.echo(f"""Usage: dataserv-cli data [OPTIONS] [SYMBOL]...

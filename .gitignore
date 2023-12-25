@@ -173,8 +173,8 @@ x*.*
 .md
 beta.py
 
-#*.bak
-#*.log
+*.bak
+*.log
 #.adblock_link
 #*.sqlite3
 #migrations/

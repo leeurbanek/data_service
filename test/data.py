@@ -1,10 +1,7 @@
 import datetime
 
 
-ctx_tiingo = {
-    'default': {'debug': 'True', 'temp_dir': 'temp'}, 
-    'data_service': {'back_days': '5', 'database': 'data_service.db', 'symbol': 'IWM LQD', 'url_tiingo': 'https://api.tiingo.com/tiingo'}
-}
+ctx = {'default': {'debug': 'True', 'temp_dir': 'temp'}, 'data_service': {'back_days': '5', 'database': 'data_service.db', 'frequency': 'daily', 'symbol': 'IWM LQD', 'table': 'price volume'}}
 
 read_one_price_data_IWM = [
     {'date': '2023-12-11T00:00:00.000Z', 'close': 187.19, 'high': 187.62, 'low': 185.885, 'open': 186.68, 'volume': 29302064, 'adjClose': 187.19, 'adjHigh': 187.62, 'adjLow': 185.885, 'adjOpen': 186.68, 'adjVolume': 29302064, 'divCash': 0.0, 'splitFactor': 1.0}, 
