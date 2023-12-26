@@ -1,55 +1,177 @@
 import datetime
+from collections import namedtuple
 
 
-ctx = {'default': {'debug': 'True', 'temp_dir': 'temp'}, 'data_service': {'back_days': '5', 'database': 'data_service.db', 'frequency': 'daily', 'symbol': 'IWM LQD', 'table': 'price volume'}}
+OHLC = namedtuple('OHLC', ['symbol', 'date', 'open', 'high', 'low', 'close', 'volume'])
+
+ctx = {
+    'default': {
+        'debug': 'True', 
+        'temp_dir': 'temp'
+    }, 
+    'data_service': {
+        'back_days': '5', 
+        'database': 'data_service.db', 
+        'frequency': 'daily', 
+        'symbol': 'IWM LQD', 
+        'table': 'price volume'
+    }
+}
 
 read_one_price_data_IWM = [
-    {'date': '2023-12-11T00:00:00.000Z', 'close': 187.19, 'high': 187.62, 'low': 185.885, 'open': 186.68, 'volume': 29302064, 'adjClose': 187.19, 'adjHigh': 187.62, 'adjLow': 185.885, 'adjOpen': 186.68, 'adjVolume': 29302064, 'divCash': 0.0, 'splitFactor': 1.0}, 
-    {'date': '2023-12-12T00:00:00.000Z', 'close': 187.0, 'high': 187.655, 'low': 185.335, 'open': 186.97, 'volume': 32023999, 'adjClose': 187.0, 'adjHigh': 187.655, 'adjLow': 185.335, 'adjOpen': 186.97, 'adjVolume': 32023999, 'divCash': 0.0, 'splitFactor': 1.0}, 
-    {'date': '2023-12-13T00:00:00.000Z', 'close': 193.33, 'high': 193.64, 'low': 185.67, 'open': 187.1, 'volume': 69484819, 'adjClose': 193.33, 'adjHigh': 193.64, 'adjLow': 185.67, 'adjOpen': 187.1, 'adjVolume': 69484819, 'divCash': 0.0, 'splitFactor': 1.0}, 
-    {'date': '2023-12-14T00:00:00.000Z', 'close': 198.71, 'high': 200.035, 'low': 196.48, 'open': 196.87, 'volume': 83649334, 'adjClose': 198.71, 'adjHigh': 200.035, 'adjLow': 196.48, 'adjOpen': 196.87, 'adjVolume': 83649334, 'divCash': 0.0, 'splitFactor': 1.0}, 
-    {'date': '2023-12-15T00:00:00.000Z', 'close': 197.04, 'high': 199.55, 'low': 195.95, 'open': 198.95, 'volume': 74160699, 'adjClose': 197.04, 'adjHigh': 199.55, 'adjLow': 195.95, 'adjOpen': 198.95, 'adjVolume': 74160699, 'divCash': 0.0, 'splitFactor': 1.0}
+    {
+        'date': '2023-12-20T00:00:00.000Z', 
+        'close': 196.28, 
+        'high': 202.17, 
+        'low': 196.16, 
+        'open': 199.86, 
+        'volume': 62360257, 
+        'adjClose': 196.28, 
+        'adjHigh': 202.17, 
+        'adjLow': 196.16, 
+        'adjOpen': 199.86, 
+        'adjVolume': 62360257, 
+        'divCash': 0.7339, 
+        'splitFactor': 1.0
+    }, 
+    {
+        'date': '2023-12-21T00:00:00.000Z', 
+        'close': 199.62, 
+        'high': 199.82, 
+        'low': 197.52, 
+        'open': 198.5, 
+        'volume': 38613394, 
+        'adjClose': 199.62, 
+        'adjHigh': 199.82, 
+        'adjLow': 197.52, 
+        'adjOpen': 198.5, 
+        'adjVolume': 38613394, 
+        'divCash': 0.0, 
+        'splitFactor': 1.0
+    }, 
+    {
+        'date': '2023-12-22T00:00:00.000Z', 
+        'close': 201.48, 
+        'high': 202.81, 
+        'low': 200.19, 
+        'open': 200.88, 
+        'volume': 39173804, 
+        'adjClose': 201.48, 
+        'adjHigh': 202.81, 
+        'adjLow': 200.19, 
+        'adjOpen': 200.88, 
+        'adjVolume': 39173804, 
+        'divCash': 0.0, 
+        'splitFactor': 1.0
+    }
 ]
 
 parse_price_data_IWM = [
-    [datetime.date(2023, 12, 11), 'IWM', 18668, 18762, 18588, 18719, 29302064], 
-    [datetime.date(2023, 12, 12), 'IWM', 18697, 18766, 18534, 18700, 32023999], 
-    [datetime.date(2023, 12, 13), 'IWM', 18710, 19364, 18567, 19333, 69484819], 
-    [datetime.date(2023, 12, 14), 'IWM', 19687, 20004, 19648, 19871, 83649334], 
-    [datetime.date(2023, 12, 15), 'IWM', 19895, 19955, 19595, 19704, 74160699]
+    OHLC(
+        symbol='IWM', 
+        date=datetime.date(2023, 12, 20), 
+        open=19986, 
+        high=20217, 
+        low=19616, 
+        close=19628, 
+        volume=62360257
+    ), 
+    OHLC(
+        symbol='IWM', 
+        date=datetime.date(2023, 12, 21), 
+        open=19850, 
+        high=19982, 
+        low=19752, 
+        close=19962, 
+        volume=38613394
+    ), 
+    OHLC(
+        symbol='IWM', 
+        date=datetime.date(2023, 12, 22), 
+        open=20088, 
+        high=20281, 
+        low=20019, 
+        close=20148, 
+        volume=39173804
+    )
 ]
 
 read_one_price_data_LQD = [
-    {'date': '2023-12-11T00:00:00.000Z', 'close': 107.33, 'high': 107.36, 'low': 106.78, 'open': 107.22, 'volume': 17714571, 'adjClose': 106.9499753455, 'adjHigh': 106.9798691241, 'adjLow': 106.4019227373, 'adjOpen': 106.8403648238, 'adjVolume': 17714571, 'divCash': 0.0, 'splitFactor': 1.0}, 
-    {'date': '2023-12-12T00:00:00.000Z', 'close': 107.94, 'high': 107.9758, 'low': 107.14, 'open': 107.32, 'volume': 22111087, 'adjClose': 107.557815511, 'adjHigh': 107.5934887535, 'adjLow': 106.7606480808, 'adjOpen': 106.9400107526, 'adjVolume': 22111087, 'divCash': 0.0, 'splitFactor': 1.0}, 
-    {'date': '2023-12-13T00:00:00.000Z', 'close': 109.75, 'high': 109.945, 'low': 108.13, 'open': 108.35, 'volume': 33623567, 'adjClose': 109.3614068216, 'adjHigh': 109.5557163827, 'adjLow': 107.7471427756, 'adjOpen': 107.9663638189, 'adjVolume': 33623567, 'divCash': 0.0, 'splitFactor': 1.0}, 
-    {'date': '2023-12-14T00:00:00.000Z', 'close': 110.52, 'high': 110.865, 'low': 110.12, 'open': 110.24, 'volume': 28202255, 'adjClose': 110.52, 'adjHigh': 110.865, 'adjLow': 110.12, 'adjOpen': 110.24, 'adjVolume': 28202255, 'divCash': 0.39271, 'splitFactor': 1.0}, 
-    {'date': '2023-12-15T00:00:00.000Z', 'close': 110.36, 'high': 110.57, 'low': 110.14, 'open': 110.42, 'volume': 17904113, 'adjClose': 110.36, 'adjHigh': 110.57, 'adjLow': 110.14, 'adjOpen': 110.42, 'adjVolume': 17904113, 'divCash': 0.0, 'splitFactor': 1.0}
+    {
+        'date': '2023-12-20T00:00:00.000Z', 
+        'close': 110.33, 
+        'high': 110.42, 
+        'low': 109.905, 
+        'open': 110.25, 
+        'volume': 23942016, 
+        'adjClose': 110.33, 
+        'adjHigh': 110.42, 
+        'adjLow': 109.905, 
+        'adjOpen': 110.25, 
+        'adjVolume': 23942016, 
+        'divCash': 0.0, 
+        'splitFactor': 1.0
+    }, 
+    {
+        'date': '2023-12-21T00:00:00.000Z', 
+        'close': 110.29, 
+        'high': 110.71, 
+        'low': 110.03, 
+        'open': 110.59, 
+        'volume': 24168326, 
+        'adjClose': 110.29, 
+        'adjHigh': 110.71, 
+        'adjLow': 110.03, 
+        'adjOpen': 110.59, 
+        'adjVolume': 24168326, 
+        'divCash': 0.0, 
+        'splitFactor': 1.0
+    }, 
+    {
+        'date': '2023-12-22T00:00:00.000Z', 
+        'close': 110.1, 
+        'high': 110.5, 
+        'low': 109.935, 
+        'open': 110.44, 
+        'volume': 11037070, 
+        'adjClose': 110.1, 
+        'adjHigh': 110.5, 
+        'adjLow': 109.935, 
+        'adjOpen': 110.44, 
+        'adjVolume': 11037070, 
+        'divCash': 0.0, 
+        'splitFactor': 1.0
+    }
 ]
 
 parse_price_data_LQD = [
-    [datetime.date(2023, 12, 11), 'LQD', 10684, 10698, 10640, 10695, 17714571], 
-    [datetime.date(2023, 12, 12), 'LQD', 10694, 10759, 10676, 10756, 22111087], 
-    [datetime.date(2023, 12, 13), 'LQD', 10797, 10956, 10775, 10936, 33623567], 
-    [datetime.date(2023, 12, 14), 'LQD', 11024, 11086, 11012, 11052, 28202255], 
-    [datetime.date(2023, 12, 15), 'LQD', 11042, 11057, 11014, 11036, 17904113]
-]
-
-get_data = [
-    [
-        [datetime.date(2023, 12, 11), 'IWM', 18668, 18762, 18588, 18719, 29302064], 
-        [datetime.date(2023, 12, 12), 'IWM', 18697, 18766, 18534, 18700, 32023999], 
-        [datetime.date(2023, 12, 13), 'IWM', 18710, 19364, 18567, 19333, 69484819], 
-        [datetime.date(2023, 12, 14), 'IWM', 19687, 20004, 19648, 19871, 83649334], 
-        [datetime.date(2023, 12, 15), 'IWM', 19895, 19955, 19595, 19704, 74160699]
-    ], 
-    [
-        [datetime.date(2023, 12, 11), 'LQD', 10684, 10698, 10640, 10695, 17714571], 
-        [datetime.date(2023, 12, 12), 'LQD', 10694, 10759, 10676, 10756, 22111087], 
-        [datetime.date(2023, 12, 13), 'LQD', 10797, 10956, 10775, 10936, 33623567], 
-        [datetime.date(2023, 12, 14), 'LQD', 11024, 11086, 11012, 11052, 28202255], 
-        [datetime.date(2023, 12, 15), 'LQD', 11042, 11057, 11014, 11036, 17904113]
-    ]
+    OHLC(
+        symbol='LQD', 
+        date=datetime.date(2023, 12, 20), 
+        open=11025, 
+        high=11042, 
+        low=10990, 
+        close=11033, 
+        volume=23942016
+    ), 
+    OHLC(
+        symbol='LQD', 
+        date=datetime.date(2023, 12, 21), 
+        open=11059, 
+        high=11071, 
+        low=11003, 
+        close=11029, 
+        volume=24168326
+    ), 
+    OHLC(
+        symbol='LQD', 
+        date=datetime.date(2023, 12, 22), 
+        open=11044, 
+        high=11050, 
+        low=10994, 
+        close=11010, 
+        volume=11037070
+    )
 ]
 
 symbol = ['IWM', 'LQD']
