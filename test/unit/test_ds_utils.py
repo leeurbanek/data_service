@@ -5,10 +5,10 @@ import os
 import unittest
 from unittest.mock import Mock
 
-from test.data import (get_data)
+# from test.data import (get_data)
 from src import config_dict
-from src.data_service.utils import DatabaseConnectionManager
-from src.data_service.utils import PriceManager
+from src.data_service.utils_sqlite import DatabaseConnectionManager
+# from src.data_service.utils import PriceManager
 
 
 debug = config_dict['default']['debug'] == 'True'
@@ -52,29 +52,29 @@ class DatabaseConnectionManagerTest(unittest.TestCase):
                 print(f"{e}")
             self.assertEqual(result, ('F3',))
 
-class PriceManagerTest(unittest.TestCase):
-    """"""
-    def setUp(self) -> None:
-        self.data = get_data
+# class PriceManagerTest(unittest.TestCase):
+#     """"""
+#     def setUp(self) -> None:
+#         self.data = get_data
 
-    def tearDown(self) -> None:
-        logging.disable(logging.CRITICAL)
-        del self.data
+#     def tearDown(self) -> None:
+#         logging.disable(logging.CRITICAL)
+#         del self.data
     
-    def test_column_index_price_value(self):
-        with PriceManager(data=self.data) as writer:
-            self.assertEqual(['IWM', 'LQD'], writer.column)
-            self.assertEqual([
-                datetime.date(2023, 12, 11), 
-                datetime.date(2023, 12, 12), 
-                datetime.date(2023, 12, 13), 
-                datetime.date(2023, 12, 14), 
-                datetime.date(2023, 12, 15)
-            ], writer.index)
-            self.assertEqual([
-                [18697, 18675, 19149, 19848, 19740], 
-                [10682, 10737, 10901, 11050, 11036]
-            ], writer.price)
+#     def test_column_index_price_value(self):
+#         with PriceManager(data=self.data) as writer:
+#             self.assertEqual(['IWM', 'LQD'], writer.column)
+#             self.assertEqual([
+#                 datetime.date(2023, 12, 11), 
+#                 datetime.date(2023, 12, 12), 
+#                 datetime.date(2023, 12, 13), 
+#                 datetime.date(2023, 12, 14), 
+#                 datetime.date(2023, 12, 15)
+#             ], writer.index)
+#             self.assertEqual([
+#                 [18697, 18675, 19149, 19848, 19740], 
+#                 [10682, 10737, 10901, 11050, 11036]
+#             ], writer.price)
 
 
 if __name__ == '__main__':

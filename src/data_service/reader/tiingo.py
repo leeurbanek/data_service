@@ -97,3 +97,18 @@ class TiingoReader():
             )
         if self.debug: logger.debug(f"_read_one_price_data(self, symbol={symbol}) -> request response:\n{request_response.json()}")
         return request_response.json()
+
+
+# >>> import datetime
+# >>> date=datetime.date(2023, 12, 11)
+# >>> type(date)
+# <class 'datetime.date'>
+# >>> date.toordinal()
+# 738865
+# >>> ord = date.toordinal()
+# >>> type(ord)
+# <class 'int'>
+# >>> datetime.date.fromordinal(ord)
+# datetime.date(2023, 12, 11)
+# >>> type(datetime.date.fromordinal(ord))
+# <class 'datetime.date'>

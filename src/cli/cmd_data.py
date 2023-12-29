@@ -1,9 +1,11 @@
 import logging
+import os
 
 import click
 
 from src.data_service import client
-from src.data_service.utils import close_weighted_price
+from src.data_service.utils_sqlite import create_database
+# from src.data_service.utils import close_weighted_price
 
 
 logger = logging.getLogger(__name__)
@@ -40,11 +42,17 @@ def cli(ctx, opt_trans=None, symbol=None):
             ctx.obj['data_service']['symbol'] = [
                 s.upper() for s in list(symbol)
             ]
-        else:  # use symbols from config file
+        else:  # use symbols from cfg_data.ini file
             import re  # remove commas, etc.
             ctx.obj['data_service']['symbol'] = [  # convert str to list
                 s.upper() for s in re.findall(r'[^,;\s]+', ctx.obj['data_service']['symbol'])
             ]
+        # check database exists if not create it
+        if not os.path.isfile(f"{ctx.obj['default']['temp_dir']}/{ctx.obj['data_service']['database']}"):
+            create_database(ctx)
+            if ctx.obj['default']['debug'] == 'True':
+                logger.debug(f"create database: {ctx.obj['default']['temp_dir']}/{ctx.obj['data_service']['database']}\n")
+
         client.get_data(ctx)
 
     else:  # print default message

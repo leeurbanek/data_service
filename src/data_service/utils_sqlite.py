@@ -1,4 +1,3 @@
-import datetime
 import logging
 import sqlite3
 import os
@@ -8,6 +7,39 @@ from src import config_dict
 
 debug = config_dict['default']['debug'] == 'True'
 logger = logging.getLogger(__name__)
+
+
+class DatabaseWriter:
+    """"""
+    def __init__(self, ctx):
+        self.db_path = f"{ctx.obj['default']['temp_dir']}/{ctx.obj['data_service']['database']}"
+        self.debug = f"{ctx.obj['default']['debug']}" == 'True'
+        if self.debug: logger.debug(self)
+
+
+def create_database(ctx):
+    """"""
+    if debug: logger.debug(f"create_database(ctx={ctx})")
+
+    db_path = f"{ctx.obj['default']['temp_dir']}/{ctx.obj['data_service']['database']}"
+
+    import re
+    with DatabaseConnectionManager(db_path=db_path, mode='rwc') as db:
+        table_list = [t.lower() for t in re.findall(r'[^,;\s]+', ctx.obj['data_service']['table'])]
+        for table in table_list:
+            db.cursor.execute(f'''
+                CREATE TABLE {table} (
+                    Date    INTEGER    NOT NULL, 
+                    PRIMARY KEY (Date)
+                )
+            ''')
+            # add symbol column to table
+            col_list = ctx.obj['data_service']['symbol']
+            for col in col_list:
+                db.cursor.execute(f'''
+                    ALTER TABLE {table} ADD COLUMN {col} INTEGER
+                ''')
+    if not debug: print(f"created database: {db_path}")
 
 
 class DatabaseConnectionManager:
@@ -54,63 +86,63 @@ class DatabaseConnectionManager:
         self.connection.close()
 
 
-def close_weighted_price(ctx):
-    """"""
-    if ctx.obj['default']['debug'] == 'True':
-        logger.debug(f"close_weighted_price(ctx={ctx.obj})")
+# def close_weighted_price(ctx):
+#     """"""
+#     if ctx.obj['default']['debug'] == 'True':
+#         logger.debug(f"close_weighted_price(ctx={ctx.obj})")
 
 
-class PriceManager:
-    """Context manager for writing to Sqlite3 databases.
-    -------------------------------------------------
-    \n
-    Parameters
-    ----------
-    \n
-    Returns
-    -------
-    \n
-    """
-    def __init__(self, data=None):
-        self.data = data
-        self.debug = debug
+# class PriceManager:
+#     """Context manager for writing to Sqlite3 databases.
+#     -------------------------------------------------
+#     \n
+#     Parameters
+#     ----------
+#     \n
+#     Returns
+#     -------
+#     \n
+#     """
+#     def __init__(self, data=None):
+#         self.data = data
+#         self.debug = debug
 
-    def __enter__(self):
-        if self.debug: logger.debug('PriceManager.__enter__()')
-        try:
-            self.column = []  # symbol
-            for item in self.data:
-                self.column.append(item[0][1])
+#     def __enter__(self):
+#         if self.debug: logger.debug('PriceManager.__enter__()')
+#         try:
+#             self.column = []  # symbol
+#             for item in self.data:
+#                 self.column.append(item[0][1])
 
-            self.index = []  # date
-            for item in self.data[0]:
-                self.index.append(item[0])
+#             self.index = []  # date
+#             for item in self.data[0]:
+#                 self.index.append(item[0])
 
-            self.price = []  # close weighted price
-            for item in self.data:
-                self.price.append([
-                    round(  # high + low + close
-                        (i[3] + i[4] + i[5]*2) / 4
-                    )for i in item
-                ])
+#             self.price = []  # close weighted price
+#             for item in self.data:
+#                 self.price.append([
+#                     round(  # high + low + close
+#                         (i[3] + i[4] + i[5]*2) / 4
+#                     )for i in item
+#                 ])
 
-            if self.debug: logger.debug(
-                f"column={self.column}, "
-                f"index={self.index}, "
-                f"price={self.price}"
-            )
-            return self
+#             if self.debug: logger.debug(
+#                 f"column={self.column}, "
+#                 f"index={self.index}, "
+#                 f"price={self.price}"
+#             )
+#             return self
 
-        except Exception as e:
-            print(f"{e}")
+#         except Exception as e:
+#             print(f"{e}")
 
-    def __exit__(self, exc_type, exc_value, exc_traceback):
-        if self.debug: logger.debug('PriceManager.__exit__()')
+#     def __exit__(self, exc_type, exc_value, exc_traceback):
+#         if self.debug: logger.debug('PriceManager.__exit__()')
 
 
-class VolumeManager:
-    """"""
-    pass
+# class VolumeManager:
+#     """"""
+#     pass
 
 # =======
 

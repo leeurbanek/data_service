@@ -72,7 +72,8 @@ class AlphavantageReader():
         for item in self._read_one_price_data(symbol):
             data = OHLC(
                 symbol.upper(),
-                datetime.date.fromisoformat(item.get('date')[:10]),
+                # datetime.date.fromisoformat(item.get('date')[:10]),
+                datetime.date.fromisoformat(item.get('date')[:10]).toordinal(),
                 round(item.get('adjOpen')*100),
                 round(item.get('adjHigh')*100),
                 round(item.get('adjLow')*100),

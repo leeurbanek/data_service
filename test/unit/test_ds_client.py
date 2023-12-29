@@ -2,7 +2,7 @@ import logging
 import unittest
 from unittest.mock import MagicMock
 
-from test.data import get_data, ctx_tiingo
+from test.data import ctx
 from src import config_dict
 from src.data_service import client
 
@@ -15,9 +15,9 @@ class UseTiingoReaderTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.ctx = MagicMock()
-        self.ctx.obj.return_value = ctx_tiingo
+        self.ctx.obj.return_value = ctx
         self.download = MagicMock()
-        self.download.return_value = get_data
+        # self.download.return_value = get_data
 
     def tearDown(self) -> None:
         # logging.disable(logging.CRITICAL)
