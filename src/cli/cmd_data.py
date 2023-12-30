@@ -4,7 +4,7 @@ import os
 import click
 
 from src.data_service import client
-from src.data_service.utils_sqlite import create_database
+from src.data_service.utils import sqlite_create_database
 # from src.data_service.utils import close_weighted_price
 
 
@@ -49,7 +49,7 @@ def cli(ctx, opt_trans=None, symbol=None):
             ]
         # check database exists if not create it
         if not os.path.isfile(f"{ctx.obj['default']['temp_dir']}/{ctx.obj['data_service']['database']}"):
-            create_database(ctx)
+            sqlite_create_database(ctx)
             if ctx.obj['default']['debug'] == 'True':
                 logger.debug(f"create database: {ctx.obj['default']['temp_dir']}/{ctx.obj['data_service']['database']}\n")
 

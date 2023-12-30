@@ -9,9 +9,9 @@ from src import debug
 logger = logging.getLogger(__name__)
 
 
-def process_close_weighted_price(tuple_list):
+def close_weighted_price(tuple_list):
     """"""
-    if debug: logger.debug(f"process_close_weighted_price(tuple_list={tuple_list})")
+    if debug: logger.debug(f"close_weighted_price(tuple_list={tuple_list})")
 
     Price = namedtuple('Price', ['symbol', 'date', 'price'])
     price_list =[]
@@ -24,14 +24,14 @@ def process_close_weighted_price(tuple_list):
         )
         price_list.append(close_weighted_price)
     
-    if debug: logger.debug(f"process_close_weighted_price() -> price_list:\n{price_list})")
+    if debug: logger.debug(f"close_weighted_price() -> price_list:\n{price_list})")
 
     return price_list
 
 
-def process_volume(tuple_list):
+def volume_data(tuple_list):
     """"""
-    if debug: logger.debug(f"process_volume(tuple_list={tuple_list})")
+    if debug: logger.debug(f"volume_data(tuple_list={tuple_list})")
 
     Volume = namedtuple('Volume', ['symbol', 'date', 'volume'])
     volume_list =[]
@@ -44,11 +44,11 @@ def process_volume(tuple_list):
         )
         volume_list.append(volume)
     
-    if debug: logger.debug(f"process_volume() -> volume_list:\n{volume_list})")
+    if debug: logger.debug(f"volume_data() -> volume_list:\n{volume_list})")
 
     return volume_list
 
 
 # if __name__ == '__main__':
-#     process_close_weighted_price(tuple_list)
-#     process_volume(tuple_list)
+#     close_weighted_price(tuple_list)
+#     volume_data(tuple_list)

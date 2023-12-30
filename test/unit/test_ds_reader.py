@@ -7,8 +7,7 @@ from test.data import (
     parse_price_data_IWM, parse_price_data_LQD, symbol
 )
 from src import config_dict
-from src.data_service.reader.tiingo import TiingoReader
-
+from src.data_service.reader import TiingoReader
 
 debug = config_dict['default']['debug'] == 'True'
 logger = logging.getLogger(__name__)

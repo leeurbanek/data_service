@@ -7,7 +7,7 @@ from unittest.mock import Mock
 
 # from test.data import (get_data)
 from src import config_dict
-from src.data_service.utils_sqlite import DatabaseConnectionManager
+from src.data_service.utils import SqliteConnectManager
 # from src.data_service.utils import PriceManager
 
 
@@ -29,7 +29,7 @@ class DatabaseConnectionManagerTest(unittest.TestCase):
         del self.db_table, self.rows
     
     def test_db_ctx_mgr_in_memory_mode(self):
-        with DatabaseConnectionManager(db_path='test_db', mode='memory') as db:
+        with SqliteConnectManager(db_path='test_db', mode='memory') as db:
             db.cursor.execute(f'''
                 CREATE TABLE {self.db_table} (
                     Date    DATE        NOT NULL,
