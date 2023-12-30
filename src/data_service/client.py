@@ -22,8 +22,8 @@ def get_data(ctx):
         logger.debug(f"-> {data_generator}")
 
     writer = SqliteWriter(ctx)
-    for item in data_generator:
-        writer.save_data(item)
+    for gen_idx, gen in enumerate(data_generator):
+        writer.save_data(gen_idx, gen)
 
 
 def _use_alpha_reader(ctx):

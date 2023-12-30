@@ -26,26 +26,28 @@ class SqliteWriter:
             f"debug={self.debug})"
         )
 
-    def save_data(self, data):
-        if self.debug: logger.debug(f"{self}.save_data(data={data})")
+    def save_data(self, gen_idx, gen):
+        if self.debug: logger.debug(f"{self}.save_data(data={gen})")
 
         with SqliteConnectManager(db_path=self.db_path, mode='rwc') as db:
-            for row in close_weighted_price(data):
-                table = {type(row).__name__.lower()}
-                symbol = {row.symbol}
-                date = {row.date}
-                price = {row.price}
-                print(f"table: {table}, symbol: {symbol}, date: {date}, price: {price}")
-                # db.cursor.execute(f'''''')
+            for row in close_weighted_price(gen):
+                table = {type(row).__name__.lower()}.pop()
+                symbol = {row.symbol}.pop()
+                date = {row.date}.pop()
+                price = {row.price}.pop()
 
-                # print(f"table: {type(row).__name__.lower()}")
-                # print(f"row: {row}")
-
-            # col_list = ctx.obj['data_service']['symbol']
-            # for col in col_list:
-            #     db.cursor.execute(f'''
-            #         ALTER TABLE {table} ADD COLUMN {col} INTEGER
-            #     ''')
+                if not bool(gen_idx):
+                    db.cursor.execute(f'''
+                        INSERT INTO {table} (Date, {symbol}) 
+                        VALUES (?, ?)''', 
+                        (date, price)
+                    ) 
+                else:
+                    db.cursor.execute(f'''
+                        UPDATE {table} SET {symbol} = ? 
+                        WHERE Date = {date}
+                    ''', (price,)
+                    )
 
 
 class SqliteConnectManager:
