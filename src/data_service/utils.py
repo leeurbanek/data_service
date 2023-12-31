@@ -4,7 +4,9 @@ import os
 
 from src import config_dict
 from src.data_service.processor import (
+    close_location_value,
     close_weighted_price,
+    price_volume_mass,
     volume_data
 )
 
@@ -26,21 +28,37 @@ class SqliteWriter:
             f"debug={self.debug})"
         )
 
-    def save_data(self, gen_idx, gen):
+    def save_data(self, idx, gen):
         if self.debug: logger.debug(f"{self}.save_data(data={gen})")
 
         with SqliteConnectManager(db_path=self.db_path, mode='rwc') as db:
+            for row in close_location_value(gen):
+                table = {type(row).__name__.lower()}.pop()
+                symbol = {row.symbol}.pop()
+                date = {row.date}.pop()
+                clv = {row.clv}.pop()
+
+                if not bool(idx):
+                    db.cursor.execute(f'''
+                        INSERT INTO {table} (Date, {symbol}) 
+                        VALUES (?, ?)''', (date, clv)
+                    ) 
+                else:
+                    db.cursor.execute(f'''
+                        UPDATE {table} SET {symbol} = ? 
+                        WHERE Date = {date}
+                    ''', (clv,)
+                    )
             for row in close_weighted_price(gen):
                 table = {type(row).__name__.lower()}.pop()
                 symbol = {row.symbol}.pop()
                 date = {row.date}.pop()
                 price = {row.price}.pop()
 
-                if not bool(gen_idx):
+                if not bool(idx):
                     db.cursor.execute(f'''
                         INSERT INTO {table} (Date, {symbol}) 
-                        VALUES (?, ?)''', 
-                        (date, price)
+                        VALUES (?, ?)''', (date, price)
                     ) 
                 else:
                     db.cursor.execute(f'''
@@ -48,7 +66,49 @@ class SqliteWriter:
                         WHERE Date = {date}
                     ''', (price,)
                     )
+            for row in price_volume_mass(gen):
+                table = {type(row).__name__.lower()}.pop()
+                symbol = {row.symbol}.pop()
+                date = {row.date}.pop()
+                mass = {row.mass}.pop()
 
+                if not bool(idx):
+                    db.cursor.execute(f'''
+                        INSERT INTO {table} (Date, {symbol}) 
+                        VALUES (?, ?)''', (date, mass)
+                    ) 
+                else:
+                    db.cursor.execute(f'''
+                        UPDATE {table} SET {symbol} = ? 
+                        WHERE Date = {date}
+                    ''', (mass,)
+                    )
+            for row in volume_data(gen):
+                table = {type(row).__name__.lower()}.pop()
+                symbol = {row.symbol}.pop()
+                date = {row.date}.pop()
+                volume = {row.volume}.pop()
+
+                if not bool(idx):
+                    db.cursor.execute(f'''
+                        INSERT INTO {table} (Date, {symbol}) 
+                        VALUES (?, ?)''', (date, volume)
+                    ) 
+                else:
+                    db.cursor.execute(f'''
+                        UPDATE {table} SET {symbol} = ? 
+                        WHERE Date = {date}
+                    ''', (volume,)
+                    )
+
+# # Gather config files from other apps
+# cfg_list = []
+# for filename in os.listdir(base_dir):
+#     if filename.startswith("cfg_") and filename.endswith(".ini"):
+#         cfg_list.append(filename)
+# # and add to config object
+# for item in cfg_list:
+#     config_parser.read(item)
 
 class SqliteConnectManager:
     """Context manager for Sqlite3 databases.

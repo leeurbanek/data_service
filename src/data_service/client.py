@@ -1,6 +1,5 @@
 import logging
 
-# from src import debug
 from src.data_service.utils import SqliteWriter
 
 
@@ -22,8 +21,8 @@ def get_data(ctx):
         logger.debug(f"-> {data_generator}")
 
     writer = SqliteWriter(ctx)
-    for gen_idx, gen in enumerate(data_generator):
-        writer.save_data(gen_idx, gen)
+    for idx, gen in enumerate(data_generator):
+        writer.save_data(idx, gen)
 
 
 def _use_alpha_reader(ctx):
