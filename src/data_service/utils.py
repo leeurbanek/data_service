@@ -37,7 +37,6 @@ class SqliteWriter:
                 symbol = {row.symbol}.pop()
                 date = {row.date}.pop()
                 clv = {row.clv}.pop()
-
                 if not bool(idx):
                     db.cursor.execute(f'''
                         INSERT INTO {table} (Date, {symbol}) 
@@ -46,15 +45,13 @@ class SqliteWriter:
                 else:
                     db.cursor.execute(f'''
                         UPDATE {table} SET {symbol} = ? 
-                        WHERE Date = {date}
-                    ''', (clv,)
+                        WHERE Date = {date}''', (clv,)
                     )
             for row in close_weighted_price(gen):
                 table = {type(row).__name__.lower()}.pop()
                 symbol = {row.symbol}.pop()
                 date = {row.date}.pop()
                 price = {row.price}.pop()
-
                 if not bool(idx):
                     db.cursor.execute(f'''
                         INSERT INTO {table} (Date, {symbol}) 
@@ -63,15 +60,13 @@ class SqliteWriter:
                 else:
                     db.cursor.execute(f'''
                         UPDATE {table} SET {symbol} = ? 
-                        WHERE Date = {date}
-                    ''', (price,)
+                        WHERE Date = {date}''', (price,)
                     )
             for row in price_volume_mass(gen):
                 table = {type(row).__name__.lower()}.pop()
                 symbol = {row.symbol}.pop()
                 date = {row.date}.pop()
                 mass = {row.mass}.pop()
-
                 if not bool(idx):
                     db.cursor.execute(f'''
                         INSERT INTO {table} (Date, {symbol}) 
@@ -80,15 +75,13 @@ class SqliteWriter:
                 else:
                     db.cursor.execute(f'''
                         UPDATE {table} SET {symbol} = ? 
-                        WHERE Date = {date}
-                    ''', (mass,)
+                        WHERE Date = {date}''', (mass,)
                     )
             for row in volume_data(gen):
                 table = {type(row).__name__.lower()}.pop()
                 symbol = {row.symbol}.pop()
                 date = {row.date}.pop()
                 volume = {row.volume}.pop()
-
                 if not bool(idx):
                     db.cursor.execute(f'''
                         INSERT INTO {table} (Date, {symbol}) 
@@ -97,18 +90,9 @@ class SqliteWriter:
                 else:
                     db.cursor.execute(f'''
                         UPDATE {table} SET {symbol} = ? 
-                        WHERE Date = {date}
-                    ''', (volume,)
+                        WHERE Date = {date}''', (volume,)
                     )
 
-# # Gather config files from other apps
-# cfg_list = []
-# for filename in os.listdir(base_dir):
-#     if filename.startswith("cfg_") and filename.endswith(".ini"):
-#         cfg_list.append(filename)
-# # and add to config object
-# for item in cfg_list:
-#     config_parser.read(item)
 
 class SqliteConnectManager:
     """Context manager for Sqlite3 databases.
@@ -176,4 +160,4 @@ def sqlite_create_database(ctx):
                 db.cursor.execute(f'''
                     ALTER TABLE {table} ADD COLUMN {col} INTEGER
                 ''')
-    if not debug: print(f"created database: {db_path}")
+    if not debug: print(f"created database: '{db_path}'")

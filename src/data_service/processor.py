@@ -23,7 +23,6 @@ def close_location_value(tuple_list):
         clv_list.append(close_location_value)
     
     if debug: logger.debug(f"close_location_value() -> clv_list:\n{clv_list})")
-
     return clv_list
 
 
@@ -43,7 +42,6 @@ def close_weighted_price(tuple_list):
         price_list.append(close_weighted_price)
     
     if debug: logger.debug(f"close_weighted_price() -> price_list:\n{price_list})")
-
     return price_list
 
 
@@ -63,7 +61,6 @@ def price_volume_mass(tuple_list):
         mass_list.append(price_volume_mass)
 
     if debug: logger.debug(f"price_volume_mass() -> mass_list:\n{mass_list}")
-
     return mass_list
 
 
@@ -83,5 +80,4 @@ def volume_data(tuple_list):
         volume_list.append(volume)
     
     if debug: logger.debug(f"volume_data() -> volume_list:\n{volume_list})")
-
     return volume_list
